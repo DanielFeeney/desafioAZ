@@ -3,49 +3,48 @@ package br.com.desafio.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.desafio.dto.PessoaDTO;
 import br.com.desafio.interfaces.IObject;
 import br.com.desafio.model.Pessoa;
+import br.com.desafio.repository.PessoaRepository;
 
 @Service
 public class PessoaService implements IObject<Pessoa, PessoaDTO> {
 
+	@Autowired
+	private PessoaRepository pessoaRepository;
+	
 	@Override
-	public List<Pessoa> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Pessoa> buscarTodos() {		
+		return pessoaRepository.findAll();
 	}
 
 	@Override
 	public List<PessoaDTO> buscarTodosDto() {
-		// TODO Auto-generated method stub
-		return null;
+		return pessoaRepository.ListPessoaDTO();
 	}
 
 	@Override
 	public Optional<Pessoa> buscar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return pessoaRepository.findById(id);
 	}
 
 	@Override
 	public Optional<PessoaDTO> buscarDto(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return pessoaRepository.findPessoaDTO(id);
 	}
 
 	@Override
-	public Pessoa salvar(Pessoa t) {
-		// TODO Auto-generated method stub
-		return null;
+	public Pessoa salvar(Pessoa pessoa) {
+		return pessoaRepository.save(pessoa);
 	}
 
 	@Override
 	public void remover(Long id) {
-		// TODO Auto-generated method stub
-		
+		pessoaRepository.deleteById(id);		
 	}
 
 }

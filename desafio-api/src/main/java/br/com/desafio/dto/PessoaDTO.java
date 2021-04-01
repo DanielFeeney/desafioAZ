@@ -12,20 +12,12 @@ public class PessoaDTO {
 
 	private long id;
 	
-	@Column(name = "nome_completo", nullable = false)
 	private String nomeCompleto;
 	
-	@Column(nullable = false)
 	private String cpf;
 	
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	@Column(name = "data_nascimento", nullable = false)
 	private Date dataNascimento;
 	
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern="dd/MM/yyyy")
-	@Column(name = "data_cadastro", nullable = false)
 	private Date dataCadastro;
 	
 	private String telefone;
