@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import br.com.desafio.dto.PessoaDTO;
@@ -23,8 +24,9 @@ public class PessoaService implements IObject<Pessoa, PessoaDTO> {
 	}
 
 	@Override
-	public List<PessoaDTO> buscarTodosDto() {
-		return pessoaRepository.ListPessoaDTO();
+	public List<PessoaDTO> buscarTodosDto(int page, int linesPerPage) {
+		PageRequest pageRequest = PageRequest.of(page,linesPerPage);
+		return pessoaRepository.ListPessoaDTO(pageRequest).getContent();
 	}
 
 	@Override

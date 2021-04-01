@@ -3,6 +3,8 @@ package br.com.desafio.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,7 +19,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 			+ "p.id, p.nomeCompleto, p.cpf, "
 			+ "p.dataNascimento, p.dataCadastro, p.telefone," + 
 			" p.celular, p.email) from Pessoa p")
-	List<PessoaDTO> ListPessoaDTO();
+	Page<PessoaDTO> ListPessoaDTO(Pageable pageable);
 	
 	@Query("Select new br.com.desafio.dto.PessoaDTO("
 			+ "p.id, p.nomeCompleto, p.cpf, "

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.desafio.dto.PessoaDTO;
@@ -23,8 +24,10 @@ public class PessoaResource {
 	private PessoaService pessoaService;
 	
 	@GetMapping()
-	public ResponseEntity<?> buscarTodos(){
-		return ResponseEntity.status(HttpStatus.OK).body(pessoaService.buscarTodosDto());
+	public ResponseEntity<?> buscarTodos(
+			@RequestParam(value = "page") Integer page,
+			@RequestParam(value = "linesPerPage") Integer linesPerPage){
+		return ResponseEntity.status(HttpStatus.OK).body(pessoaService.buscarTodosDto(page, linesPerPage));
 	}
 	
 	@GetMapping("/{pessoaId}")

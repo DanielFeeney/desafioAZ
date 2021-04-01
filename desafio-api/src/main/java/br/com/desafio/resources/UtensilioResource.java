@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.desafio.dto.UtensilioDTO;
@@ -27,8 +29,10 @@ public class UtensilioResource {
 	private UtensilioService utensilioService;
 	
 	@GetMapping()
-	public ResponseEntity<?> buscarTodos(){
-		return ResponseEntity.status(HttpStatus.OK).body(utensilioService.buscarTodosDto());
+	public ResponseEntity<?> buscarTodos(
+			@RequestParam(value = "page") Integer page,
+			@RequestParam(value = "linesPerPage") Integer linesPerPage){
+		return ResponseEntity.status(HttpStatus.OK).body(utensilioService.buscarTodosDto(page, linesPerPage));
 	}
 	
 	@GetMapping("/{utensilioId}")
@@ -44,6 +48,17 @@ public class UtensilioResource {
 	
 	@PostMapping()
 	public ResponseEntity<?> salvar(@RequestBody UtensilioDTO utensilioDTO){
+		try {
+			
+			return ResponseEntity.ok().build();
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+	
+	@PutMapping("/{utensiloId}")
+	public ResponseEntity<?> alterar(@PathVariable Long utensilioId, @RequestBody UtensilioDTO utensilioDTO){
 		try {
 			
 			return ResponseEntity.ok().build();

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import br.com.desafio.dto.UtensilioDTO;
@@ -23,8 +24,9 @@ public class UtensilioService implements IObject<Utensilio, UtensilioDTO> {
 	}
 
 	@Override
-	public List<UtensilioDTO> buscarTodosDto() {
-		return utensilioRepository.ListUtensilioDTO();
+	public List<UtensilioDTO> buscarTodosDto(int page, int linesPerPage) {
+		PageRequest pageRequest = PageRequest.of(page,linesPerPage);
+		return utensilioRepository.ListUtensilioDTO(pageRequest).getContent();
 	}
 
 	@Override

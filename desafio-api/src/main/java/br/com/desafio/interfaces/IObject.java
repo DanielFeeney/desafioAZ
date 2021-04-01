@@ -7,7 +7,7 @@ public interface IObject<T,D> {
 	
 	List<T> buscarTodos();
 	
-	List<D> buscarTodosDto();
+	List<D> buscarTodosDto(int paginas, int linhas);
 	
 	Optional<T> buscar(Long id);
 	
