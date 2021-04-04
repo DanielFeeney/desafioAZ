@@ -1,5 +1,6 @@
 package br.com.desafio.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import br.com.desafio.dto.UtensilioDTO;
 
 @Entity
 @Table(name = "pessoa")
@@ -38,7 +41,7 @@ public class Pessoa {
 	private Date dataNascimento;
 	
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name = "data_cadastro", nullable = false)
 	private Date dataCadastro;
 	
@@ -127,6 +130,20 @@ public class Pessoa {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+	public void setPessoa(UtensilioDTO utensilioDTO) {
+		this.nomeCompleto = utensilioDTO.getNomeCompleto();
+		this.cpf = utensilioDTO.getCpf();
+		this.dataNascimento = adicionar3horas(utensilioDTO.getDataNascimento());
+		this.telefone = utensilioDTO.getTelefone();
+		this.celular = utensilioDTO.getCelular();
+		this.email = utensilioDTO.getEmail();
+	}
 	
-	
+	public Date adicionar3horas(Date dataNascimento) {
+		Calendar data = Calendar.getInstance();
+		data.setTime(dataNascimento);
+		data.set(Calendar.HOUR, data.get(Calendar.HOUR) + 3);
+		return data.getTime();
+	}
 }

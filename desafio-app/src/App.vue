@@ -1,21 +1,17 @@
 <template>
-  <div id="app"> 
+  <v-app>
     <v-main>
       <v-toolbar
-      color="gray"
-      dark
+      color="indigo"
       centered
     >
 
-      <v-toolbar-title>Desafio</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
+      <v-toolbar-title><span style="color: #fff;">Desafio</span></v-toolbar-title>
     </v-toolbar>
+     <router-view/>
     </v-main>   
-    <router-view/>
-    
-  </div>
+   
+  </v-app>
 </template>
 
 <style lang="scss">
@@ -24,8 +20,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 
 </style>

@@ -15,6 +15,11 @@ const routes = [
     path: '/Administrador',
     name: 'Administrador',
     component: Administrador
+  },
+  {
+    path: '/Administrador/:id',
+    name: 'Editar',
+    component: Administrador
   }
 ]
 

@@ -7,10 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -19,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "utensilio")
 @SQLDelete(sql="UPDATE utensilio SET ativo = false WHERE id = ?")
-@Where(clause = "ativo = true")
+@Where(clause = "ativo = true and disponivel = true")
 public class Utensilio {
 
 	@Id
@@ -37,9 +41,15 @@ public class Utensilio {
 	
 	private boolean ativo;
 	
+	@ManyToOne
+	@Cascade(CascadeType.DELETE)
+	@JoinColumn(name =  "id_pessoa", columnDefinition = "bigint")
+	private Pessoa pessoa;
+	
 	
 	public Utensilio() {
 		this.dataDoacao = new Date();
+		this.disponivel = true;
 		this.ativo = true;
 	}
 	
@@ -72,6 +82,12 @@ public class Utensilio {
 	}
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 	
 	

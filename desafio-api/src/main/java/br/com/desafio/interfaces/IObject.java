@@ -3,15 +3,13 @@ package br.com.desafio.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-public interface IObject<T,D> {
+public interface IObject<T,L,U> {
 	
-	List<T> buscarTodos();
+	List<L> buscarTodosDto();
 	
-	List<D> buscarTodosDto(int paginas, int linhas);
+	Optional<U> buscarDto(Long id);
 	
 	Optional<T> buscar(Long id);
-	
-	Optional<D> buscarDto(Long id);
 	
 	T salvar(T t);
 	

@@ -2,35 +2,81 @@ package br.com.desafio.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class UtensilioDTO {
-
-private long id;
+	
+	private String nomeCompleto;
+	
+	private String cpf;
+		
+	private Date dataNascimento;
+	
+	private String telefone;
+	
+	private String celular;
+	
+	private String email;
 	
 	private String descricao;
 	
-	private boolean disponivel;
-	
-	private Date dataDoacao;
 
-	public UtensilioDTO(long id, String descricao, boolean disponivel, Date dataDoacao) {
-		this.id = id;
+	public UtensilioDTO(String nomeCompleto, String cpf, Date dataNascimento,
+			String telefone, String celular, String email, String descricao) {
+		this.nomeCompleto = nomeCompleto;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.telefone = telefone;
+		this.celular = celular;
+		this.email = email;
 		this.descricao = descricao;
-		this.disponivel = disponivel;
-		this.dataDoacao = dataDoacao;
 	}
 
-	public long getId() {
-		return id;
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getDescricao() {
@@ -39,22 +85,6 @@ private long id;
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public boolean isDisponivel() {
-		return disponivel;
-	}
-
-	public void setDisponivel(boolean disponivel) {
-		this.disponivel = disponivel;
-	}
-
-	public Date getDataDoacao() {
-		return dataDoacao;
-	}
-
-	public void setDataDoacao(Date dataDoacao) {
-		this.dataDoacao = dataDoacao;
 	}
 	
 	

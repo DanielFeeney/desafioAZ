@@ -4,10 +4,12 @@
     :items="utensilios"
     sort-by="descricao"
     class="elevation-1"
+    data-app
   >
-    <template v-slot:top>
+      <template v-slot:top>
       <v-toolbar
         flat
+        
       >
         <v-toolbar-title>Utensílios</v-toolbar-title>
         <v-divider
@@ -17,25 +19,26 @@
         ></v-divider>
         <v-spacer></v-spacer>
         <v-dialog
-          v-model="dialog"
           max-width="500px"
+          
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              color="primary"
-              dark
-              class="mb-2"
+
+              color="green"
+              depressed
               v-bind="attrs"
               v-on="on"
               to="/Administrador"
             >
-              Novo
+              <span style="color: #fff;">Novo</span>
             </v-btn>
           </template>          
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
+        
+          <v-dialog v-model="dialogDelete" max-width="500px" max-height="300px">
           <v-card>
-            <v-card-title class="headline">Tem certeza que deseja deletar esse item?</v-card-title>
+            <v-card-title>Tem certeza que deseja deletar esse item?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -44,32 +47,67 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        
+        <v-dialog v-model="dialogGift" max-width="500px" max-height="300px">
+          <v-card>
+            <v-card-title>Deseja doar esse item?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeGift">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="giftItemConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
     </template>
 
-      <template v-slot:item.acoes="{ item }">
-        
-        <v-icon
-          large
-          class="mr-2"
+      <template v-slot:item.actions="{ item }">
+
+        <v-btn
+          color="lime"
+          class="ma-2 white--text"
           @click="editItem(item)"
+          :to="{ name:'Editar', params: { id: item.id } }"
         >
-          mdi-pencil
-        </v-icon>
-        
-        <v-icon
-          large
-          class="mr-2"
+        Editar
+          <v-icon
+            right
+            dark
+            
+          >
+             mdi-pencil
+          </v-icon>
+        </v-btn>
+
+        <v-btn
+          color="deep-purple"
+          class="ma-2 white--text"
           @click="giftItem(item)"
         >
-          mdi-gift
-        </v-icon>
-        <v-icon
-          large
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+        Doar
+          <v-icon
+            right
+            dark
+          >
+             mdi-gift
+          </v-icon>
+        </v-btn>
+
+        <v-btn
+          color="primary"
+          class="ma-2 white--text"
+          @click="deleteItem(item)">
+          Deletar
+          <v-icon
+            right
+            dark            
+          >
+            mdi-delete
+          </v-icon>
+        </v-btn>
+
+      
       </template>
 
       
@@ -81,9 +119,11 @@
 
 
 <script>
+import UtensilioService from '../service/Utensilios';
+
   export default {
     data: () => ({
-      dialog: false,
+      dialogGift: false,
       dialogDelete: false,
       headers: [
         {
@@ -93,29 +133,21 @@
         },
         { text: 'Data Doação', value: 'dataDoacao' },
         { text: 'Doador', value: 'doador' },
-        { text: 'Ações', value: 'acoes', sortable: false },
+        { text: 'Ações', value: 'actions', sortable: false },
       ],
-      utensilios: [
-        {
-        id: 1,
-        descricao: 'AAAAAAA',
-        dataDoacao: 'BBBBBBB',
-        doador: 'CCCCCCCC',
-      },],
+      utensilios: [],
       editedIndex: -1,
       utensilioItem: {
         id: null,
         descricao: '',
-        disponivel: 0,
-        dataDoacao: 0,
-        doador: 0,
+        dataDoacao: '',
+        doador: '',
       },
       defaultItem: {
         id: null,
         descricao: '',
-        disponivel: 0,
-        dataDoacao: 0,
-        doador: 0,
+        dataDoacao: '',
+        doador: '',
       },
     }),
 
@@ -124,7 +156,7 @@
     },
 
     watch: {
-      dialog (val) {
+      dialogGift (val) {
         val || this.close()
       },
       dialogDelete (val) {
@@ -138,24 +170,31 @@
 
     methods: {
       initialize () {
-        
-      },
+        this.service = new UtensilioService('utensilio');
 
-      editItem (item) {
-        console.log(item)
+        this.service.listar()
+        .then(
+            utensilios => {this.utensilios = utensilios.data;},
+            err =>  console.log(err)
+        );
       },
 
       deleteItem (item) {
+        console.log(item)
         this.editedIndex = this.utensilios.indexOf(item)
         this.utensilioItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
-      deleteItemConfirm () {
-        this.utensilios.splice(this.editedIndex, 1)
+      deleteItemConfirm () {   
+        console.log(this.utensilioItem); 
+        this.service.deletar(this.utensilioItem.id)
+            .then(() => {
+                this.utensilios.splice(this.editedIndex, 1)
+            }, err => {this.msgInvalida = true; console.log(err)} );
         this.closeDelete()
       },
-
+      
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
@@ -164,13 +203,32 @@
         })
       },
 
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.utensilios[this.editedIndex], this.utensilioItem)
-        } else {
-          this.utensilios.push(this.utensilioItem)
-        }
-        this.close()
+
+
+
+
+
+
+      giftItem (item) {
+        this.editedIndex = this.utensilios.indexOf(item)
+        this.utensilioItem = Object.assign({}, item)
+        this.dialogGift = true
+      },
+
+      giftItemConfirm () {        
+        this.service.doar(this.utensilioItem.id)
+            .then(() => {
+                this.utensilios.splice(this.editedIndex, 1)
+            }, err => {this.msgInvalida = true; console.log(err)} );
+        this.closeGift()
+      },
+
+      closeGift () {
+        this.dialogGift = false
+        this.$nextTick(() => {
+          this.utensilioItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
       },
     },
   }
